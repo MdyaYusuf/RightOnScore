@@ -1,4 +1,5 @@
 using System.Security.Claims;
+using Api.Core.Exceptions;
 using Api.Core.Responses;
 using Microsoft.AspNetCore.Mvc;
 

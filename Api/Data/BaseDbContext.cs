@@ -1,5 +1,6 @@
 using System.Reflection;
 using Api.Core.Helpers;
+using Api.Features.Competitions;
 using Api.Features.Roles;
 using Api.Features.Users;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public class BaseDbContext : DbContext
 
   public DbSet<Role> Roles { get; set; }
   public DbSet<User> Users { get; set; }
+  public DbSet<Competition> Competitions { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
