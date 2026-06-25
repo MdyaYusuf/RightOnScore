@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Api.Core.Entities;
+using Api.Features.CompetitionSeasons;
 
 namespace Api.Features.Competitions;
 
@@ -8,6 +9,8 @@ public class Competition : Entity<Guid>
   [SetsRequiredMembers]
   public Competition()
   {
+    Seasons = new HashSet<CompetitionSeason>();
+
     Name = default!;
     Country = default!;
   }
@@ -17,4 +20,7 @@ public class Competition : Entity<Guid>
   public string? LogoUrl { get; set; }
   public CompetitionType Type { get; set; }
   public bool IsActive { get; set; }
+
+  // Relationship properties
+  public virtual ICollection<CompetitionSeason> Seasons { get; set; }
 }
