@@ -5,6 +5,7 @@ using Api.Core.Middlewares;
 using Api.Core.Security;
 using Api.Data;
 using Api.Features.CompetitionSeasons;
+using Api.Features.CompetitionStages;
 using Api.Features.Competitions;
 using Api.Features.Roles;
 using FluentValidation;
@@ -32,6 +33,7 @@ builder.Services.AddDataDependencies(builder.Configuration);
 builder.Services.AddRoleDependencies();
 builder.Services.AddCompetitionDependencies();
 builder.Services.AddCompetitionSeasonDependencies();
+builder.Services.AddCompetitionStageDependencies();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddCors(options =>
