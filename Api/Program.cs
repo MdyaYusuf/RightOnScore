@@ -9,6 +9,7 @@ using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
 using Api.Features.Competitions;
 using Api.Features.Roles;
+using Api.Features.Teams;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,7 @@ builder.Services.AddCompetitionDependencies();
 builder.Services.AddCompetitionSeasonDependencies();
 builder.Services.AddCompetitionStageDependencies();
 builder.Services.AddCompetitionGroupDependencies();
+builder.Services.AddTeamDependencies();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddCors(options =>

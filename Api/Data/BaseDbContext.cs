@@ -5,6 +5,7 @@ using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
 using Api.Features.Competitions;
 using Api.Features.Roles;
+using Api.Features.Teams;
 using Api.Features.Users;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,6 +24,7 @@ public class BaseDbContext : DbContext
   public DbSet<CompetitionSeason> CompetitionSeasons { get; set; }
   public DbSet<CompetitionStage> CompetitionStages { get; set; }
   public DbSet<CompetitionGroup> CompetitionGroups { get; set; }
+  public DbSet<Team> Teams { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {
