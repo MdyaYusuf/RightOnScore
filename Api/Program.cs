@@ -4,6 +4,7 @@ using System.Text.Json.Serialization;
 using Api.Core.Middlewares;
 using Api.Core.Security;
 using Api.Data;
+using Api.Features.CompetitionGroups;
 using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
 using Api.Features.Competitions;
@@ -34,6 +35,7 @@ builder.Services.AddRoleDependencies();
 builder.Services.AddCompetitionDependencies();
 builder.Services.AddCompetitionSeasonDependencies();
 builder.Services.AddCompetitionStageDependencies();
+builder.Services.AddCompetitionGroupDependencies();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
 builder.Services.AddCors(options =>
