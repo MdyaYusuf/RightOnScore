@@ -7,6 +7,7 @@ using Api.Data;
 using Api.Features.CompetitionGroups;
 using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
+using Api.Features.CompetitionTeams;
 using Api.Features.Competitions;
 using Api.Features.Roles;
 using Api.Features.Teams;
@@ -37,6 +38,7 @@ builder.Services.AddCompetitionDependencies();
 builder.Services.AddCompetitionSeasonDependencies();
 builder.Services.AddCompetitionStageDependencies();
 builder.Services.AddCompetitionGroupDependencies();
+builder.Services.AddCompetitionTeamDependencies();
 builder.Services.AddTeamDependencies();
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 

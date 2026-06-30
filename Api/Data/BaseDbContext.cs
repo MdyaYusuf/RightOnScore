@@ -3,6 +3,7 @@ using Api.Core.Helpers;
 using Api.Features.CompetitionGroups;
 using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
+using Api.Features.CompetitionTeams;
 using Api.Features.Competitions;
 using Api.Features.Roles;
 using Api.Features.Teams;
@@ -24,6 +25,7 @@ public class BaseDbContext : DbContext
   public DbSet<CompetitionSeason> CompetitionSeasons { get; set; }
   public DbSet<CompetitionStage> CompetitionStages { get; set; }
   public DbSet<CompetitionGroup> CompetitionGroups { get; set; }
+  public DbSet<CompetitionTeam> CompetitionTeams { get; set; }
   public DbSet<Team> Teams { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
