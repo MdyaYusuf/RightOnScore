@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Api.Core.Entities;
 using Api.Features.CompetitionStages;
 using Api.Features.CompetitionTeams;
+using Api.Features.Matches;
 
 namespace Api.Features.CompetitionGroups;
 
@@ -11,6 +12,7 @@ public class CompetitionGroup : Entity<Guid>
   public CompetitionGroup()
   {
     CompetitionTeams = new HashSet<CompetitionTeam>();
+    Matches = new HashSet<Match>();
 
     Name = default!;
     CompetitionStage = default!;
@@ -24,4 +26,5 @@ public class CompetitionGroup : Entity<Guid>
   // Relationship properties
   public virtual CompetitionStage CompetitionStage { get; set; }
   public virtual ICollection<CompetitionTeam> CompetitionTeams { get; set; }
+  public virtual ICollection<Match> Matches { get; set; }
 }
