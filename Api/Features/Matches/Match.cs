@@ -3,6 +3,7 @@ using Api.Core.Entities;
 using Api.Features.CompetitionGroups;
 using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
+using Api.Features.MatchPredictions;
 using Api.Features.Teams;
 
 namespace Api.Features.Matches;
@@ -15,6 +16,7 @@ public class Match : Entity<Guid>
     CompetitionSeason = default!;
     HomeTeam = default!;
     AwayTeam = default!;
+    MatchPredictions = new HashSet<MatchPrediction>();
   }
 
   public Guid CompetitionSeasonId { get; set; }
@@ -28,6 +30,7 @@ public class Match : Entity<Guid>
   public string? Venue { get; set; }
   public int? HomeScore { get; set; }
   public int? AwayScore { get; set; }
+  public Guid? AdvancingTeamId { get; set; }
 
   // Relationship properties
   public virtual CompetitionSeason CompetitionSeason { get; set; }
@@ -35,4 +38,6 @@ public class Match : Entity<Guid>
   public virtual CompetitionGroup? CompetitionGroup { get; set; }
   public virtual Team HomeTeam { get; set; }
   public virtual Team AwayTeam { get; set; }
+  public virtual Team? AdvancingTeam { get; set; }
+  public virtual ICollection<MatchPrediction> MatchPredictions { get; set; }
 }

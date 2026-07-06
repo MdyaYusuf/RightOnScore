@@ -220,6 +220,47 @@ public class MatchBusinessRules(
     }
   }
 
+  public void AdvancingTeamMustBeValidForRecordedResult(
+    CompetitionStage? stage,
+    int homeScore,
+    int awayScore,
+    Guid? advancingTeamId,
+    Guid homeTeamId,
+    Guid awayTeamId)
+  {
+    bool isKnockout = stage?.Type is CompetitionStageType.Knockout or CompetitionStageType.Final;
+
+    if (!isKnockout)
+    {
+      if (advancingTeamId.HasValue)
+      {
+        throw new BusinessException("Lig maçlarında tur atlayan takım belirtilmemelidir.");
+      }
+
+      return;
+    }
+
+    if (homeScore != awayScore)
+    {
+      if (advancingTeamId.HasValue)
+      {
+        throw new BusinessException("Beraberlik olmayan maçlarda tur atlayan takım belirtilmemelidir.");
+      }
+
+      return;
+    }
+
+    if (!advancingTeamId.HasValue)
+    {
+      throw new BusinessException("Eleme maçlarında beraberlik sonucunda tur atlayan takım belirtilmelidir.");
+    }
+
+    if (advancingTeamId.Value != homeTeamId && advancingTeamId.Value != awayTeamId)
+    {
+      throw new BusinessException("Tur atlayan takım ev sahibi veya deplasman takımlarından biri olmalıdır.");
+    }
+  }
+
   public void AdminRoleRequired(string userRole)
   {
     if (userRole != "Admin")

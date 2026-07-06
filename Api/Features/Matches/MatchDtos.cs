@@ -25,6 +25,7 @@ public sealed record MatchResponseDto
   public string? Venue { get; init; }
   public int? HomeScore { get; init; }
   public int? AwayScore { get; init; }
+  public Guid? AdvancingTeamId { get; init; }
 }
 
 public sealed record MatchPreviewDto
@@ -39,6 +40,7 @@ public sealed record MatchPreviewDto
   public MatchStatus Status { get; init; }
   public int? HomeScore { get; init; }
   public int? AwayScore { get; init; }
+  public Guid? AdvancingTeamId { get; init; }
 }
 
 public sealed record CreatedMatchResponseDto
@@ -77,4 +79,5 @@ public sealed record ChangeMatchStatusRequest(
 public sealed record RecordMatchResultRequest(
   Guid Id,
   int HomeScore,
-  int AwayScore);
+  int AwayScore,
+  Guid? AdvancingTeamId);

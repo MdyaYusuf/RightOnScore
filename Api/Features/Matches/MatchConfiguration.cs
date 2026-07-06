@@ -64,6 +64,9 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
     builder.Property(m => m.AwayScore)
       .IsRequired(false);
 
+    builder.Property(m => m.AdvancingTeamId)
+      .IsRequired(false);
+
     builder.HasOne(m => m.CompetitionSeason)
       .WithMany(cs => cs.Matches)
       .HasForeignKey(m => m.CompetitionSeasonId)
@@ -87,6 +90,11 @@ public class MatchConfiguration : IEntityTypeConfiguration<Match>
     builder.HasOne(m => m.AwayTeam)
       .WithMany()
       .HasForeignKey(m => m.AwayTeamId)
+      .OnDelete(DeleteBehavior.Restrict);
+
+    builder.HasOne(m => m.AdvancingTeam)
+      .WithMany()
+      .HasForeignKey(m => m.AdvancingTeamId)
       .OnDelete(DeleteBehavior.Restrict);
 
     builder.HasIndex(m => new { m.CompetitionSeasonId, m.KickoffTime });

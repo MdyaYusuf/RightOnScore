@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using Api.Core.Entities;
+using Api.Features.MatchPredictions;
 using Api.Features.Roles;
 
 namespace Api.Features.Users;
@@ -13,6 +14,7 @@ public class User : Entity<Guid>
     Email = default!;
     PasswordHash = default!;
     PasswordKey = default!;
+    MatchPredictions = new HashSet<MatchPrediction>();
   }
 
   public required string Username { get; set; }
@@ -27,4 +29,5 @@ public class User : Entity<Guid>
   // Relationship properties
   public int RoleId { get; set; }
   public virtual Role Role { get; set; } = default!;
+  public virtual ICollection<MatchPrediction> MatchPredictions { get; set; }
 }

@@ -4,6 +4,7 @@ using Api.Core.Responses;
 using Api.Features.CompetitionGroups;
 using Api.Features.CompetitionSeasons;
 using Api.Features.CompetitionStages;
+using Api.Features.MatchPredictions;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,7 @@ public class MatchService(
   IMatchRepository _matchRepository,
   MatchMapper _mapper,
   MatchBusinessRules _businessRules,
+  IMatchPredictionScoringService _matchPredictionScoringService,
   IUnitOfWork _unitOfWork,
   IValidator<CreateMatchRequest> _createValidator,
   IValidator<UpdateMatchRequest> _updateValidator,
@@ -287,17 +289,33 @@ public class MatchService(
       throw new ValidationException(validationResult.Errors);
     }
 
-    Match match = await _businessRules.GetMatchIfExistAsync(request.Id, enableTracking: true, cancellationToken: cancellationToken);
+    Match match = await _businessRules.GetMatchIfExistAsync(
+      request.Id,
+      include: query => query.Include(m => m.CompetitionStage),
+      enableTracking: true,
+      cancellationToken: cancellationToken);
 
     _businessRules.ResultCanOnlyBeRecordedForLiveOrScheduledMatch(match);
     _businessRules.ScoresMustBeValid(request.HomeScore, request.AwayScore);
+    _businessRules.AdvancingTeamMustBeValidForRecordedResult(
+      match.CompetitionStage,
+      request.HomeScore,
+      request.AwayScore,
+      request.AdvancingTeamId,
+      match.HomeTeamId,
+      match.AwayTeamId);
 
     match.HomeScore = request.HomeScore;
     match.AwayScore = request.AwayScore;
+    match.AdvancingTeamId = request.HomeScore == request.AwayScore
+      ? request.AdvancingTeamId
+      : null;
     match.Status = MatchStatus.Finished;
 
     _matchRepository.Update(match);
     await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+    await _matchPredictionScoringService.ScoreMatchAsync(match.Id, cancellationToken);
 
     return new ReturnModel<NoData>()
     {
