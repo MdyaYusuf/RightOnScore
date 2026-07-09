@@ -106,6 +106,30 @@ public class EfMatchPredictionRepository
           || (p.Match.KickoffTime == kickoffTime && p.Match.Id < matchId)))
       .ToListAsync(cancellationToken);
   }
+
+  public async Task<PredictionStandingStats> GetStandingStatsForUserAndSeasonAsync(
+    Guid userId,
+    Guid competitionSeasonId,
+    CancellationToken cancellationToken = default)
+  {
+    List<MatchPrediction> predictions = await Query(enableTracking: false)
+      .IncludeForScoring()
+      .Where(p => p.UserId == userId
+        && p.Match.CompetitionSeasonId == competitionSeasonId
+        && p.PointsEarned != null
+        && p.Match.Status == MatchStatus.Finished)
+      .ToListAsync(cancellationToken);
+
+    if (predictions.Count == 0)
+    {
+      return new PredictionStandingStats(0, 0, 0);
+    }
+
+    int totalPoints = predictions.Sum(p => p.PointsEarned!.Value);
+    int exactScoreCount = predictions.Count(p => MatchPredictionScoringRules.IsExactScore(p, p.Match));
+
+    return new PredictionStandingStats(totalPoints, exactScoreCount, predictions.Count);
+  }
 }
 
 public static class MatchPredictionQueryableExtensions

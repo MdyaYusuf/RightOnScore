@@ -8,6 +8,7 @@ using Api.Features.Competitions;
 using Api.Features.Matches;
 using Api.Features.MatchPredictions;
 using Api.Features.Roles;
+using Api.Features.SeasonStandings;
 using Api.Features.Teams;
 using Api.Features.Users;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ public class BaseDbContext : DbContext
   public DbSet<CompetitionTeam> CompetitionTeams { get; set; }
   public DbSet<Match> Matches { get; set; }
   public DbSet<MatchPrediction> MatchPredictions { get; set; }
+  public DbSet<SeasonStanding> SeasonStandings { get; set; }
   public DbSet<Team> Teams { get; set; }
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)

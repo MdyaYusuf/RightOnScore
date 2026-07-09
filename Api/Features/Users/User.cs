@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 using Api.Core.Entities;
 using Api.Features.MatchPredictions;
 using Api.Features.Roles;
+using Api.Features.SeasonStandings;
 
 namespace Api.Features.Users;
 
@@ -15,6 +16,7 @@ public class User : Entity<Guid>
     PasswordHash = default!;
     PasswordKey = default!;
     MatchPredictions = new HashSet<MatchPrediction>();
+    SeasonStandings = new HashSet<SeasonStanding>();
   }
 
   public required string Username { get; set; }
@@ -30,4 +32,5 @@ public class User : Entity<Guid>
   public int RoleId { get; set; }
   public virtual Role Role { get; set; } = default!;
   public virtual ICollection<MatchPrediction> MatchPredictions { get; set; }
+  public virtual ICollection<SeasonStanding> SeasonStandings { get; set; }
 }

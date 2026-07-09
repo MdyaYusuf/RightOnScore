@@ -1,5 +1,6 @@
 using Api.Core.Exceptions;
 using Api.Core.Repositories;
+using Api.Features.SeasonStandings;
 using Api.Features.CompetitionStages;
 using Api.Features.Matches;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ namespace Api.Features.MatchPredictions;
 public class MatchPredictionScoringService(
   IMatchRepository _matchRepository,
   IMatchPredictionRepository _matchPredictionRepository,
+  ISeasonStandingService _seasonStandingService,
   MatchPredictionScoringBusinessRules _scoringBusinessRules,
   IUnitOfWork _unitOfWork) : IMatchPredictionScoringService
 {
@@ -67,6 +69,12 @@ public class MatchPredictionScoringService(
 
       _matchPredictionRepository.Update(prediction);
     }
+
+    IEnumerable<Guid> userIds = predictions.Select(p => p.UserId);
+    await _seasonStandingService.RefreshStandingsForUsersAsync(
+      userIds,
+      match.CompetitionSeasonId,
+      cancellationToken);
 
     await _unitOfWork.SaveChangesAsync(cancellationToken);
   }

@@ -42,4 +42,9 @@ public interface IMatchPredictionRepository : IRepository<MatchPrediction, Guid>
     DateTime kickoffTime,
     Guid matchId,
     CancellationToken cancellationToken = default);
+
+  Task<PredictionStandingStats> GetStandingStatsForUserAndSeasonAsync(
+    Guid userId,
+    Guid competitionSeasonId,
+    CancellationToken cancellationToken = default);
 }

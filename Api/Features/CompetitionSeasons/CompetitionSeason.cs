@@ -4,6 +4,7 @@ using Api.Features.Competitions;
 using Api.Features.CompetitionStages;
 using Api.Features.CompetitionTeams;
 using Api.Features.Matches;
+using Api.Features.SeasonStandings;
 
 namespace Api.Features.CompetitionSeasons;
 
@@ -15,6 +16,7 @@ public class CompetitionSeason : Entity<Guid>
     CompetitionTeams = new HashSet<CompetitionTeam>();
     Matches = new HashSet<Match>();
     Stages = new HashSet<CompetitionStage>();
+    SeasonStandings = new HashSet<SeasonStanding>();
 
     Name = default!;
     Competition = default!;
@@ -32,4 +34,5 @@ public class CompetitionSeason : Entity<Guid>
   public virtual ICollection<CompetitionStage> Stages { get; set; }
   public virtual ICollection<CompetitionTeam> CompetitionTeams { get; set; }
   public virtual ICollection<Match> Matches { get; set; }
+  public virtual ICollection<SeasonStanding> SeasonStandings { get; set; }
 }
