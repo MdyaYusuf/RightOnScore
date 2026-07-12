@@ -13,7 +13,8 @@ namespace Api.Features.Authentication;
 [Route("api/[controller]")]
 public class AuthenticationController(
   IAuthenticationService _authService,
-  IOptions<TokenOptions> _tokenOptions) : CustomBaseController
+  IOptions<TokenOptions> _tokenOptions,
+  IWebHostEnvironment _environment) : CustomBaseController
 {
   private readonly TokenOptions _options = _tokenOptions.Value;
 
@@ -90,10 +91,13 @@ public class AuthenticationController(
 
   private void SetTokensAsCookies(TokenResponseDto tokens)
   {
+    // Secure cookies are rejected on http://localhost; keep Secure outside Development.
+    bool secureCookies = !_environment.IsDevelopment();
+
     var accessOptions = new CookieOptions
     {
       HttpOnly = true,
-      Secure = true,
+      Secure = secureCookies,
       SameSite = SameSiteMode.Strict,
       Expires = tokens.Expiration
     };
@@ -102,7 +106,7 @@ public class AuthenticationController(
     var refreshOptions = new CookieOptions
     {
       HttpOnly = true,
-      Secure = true,
+      Secure = secureCookies,
       SameSite = SameSiteMode.Strict,
       Expires = DateTime.UtcNow.AddDays(_options.RefreshTokenExpiration)
     };
