@@ -495,3 +495,6 @@ lerna-debug.log*
 
 # Cursor AI Indexing Exclusions
 .cursorignore
+
+# Stitch UI reference exports (local only — not used at build time)
+Client/design/
