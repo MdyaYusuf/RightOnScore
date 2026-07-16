@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { clearSeasonHub } from "../../features/competitionSeasons/seasonHubSlice";
 import { clearFixtures } from "../../features/matches/fixturesSlice";
+import { clearMyPredictions } from "../../features/matchPredictions/myPredictionsSlice";
 import { clearLeaderboard } from "../../features/seasonStandings/leaderboardSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
@@ -38,6 +39,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
     dispatch(clearSeasonHub());
     dispatch(clearFixtures());
     dispatch(clearLeaderboard());
+    dispatch(clearMyPredictions());
     navigate("/login", { replace: true });
   }
 
