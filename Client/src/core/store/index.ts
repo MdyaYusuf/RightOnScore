@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "../../features/auth/authSlice";
 import seasonHubReducer from "../../features/competitionSeasons/seasonHubSlice";
+import fixturesReducer from "../../features/matches/fixturesSlice";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
     seasonHub: seasonHubReducer,
+    fixtures: fixturesReducer,
   },
 });
 

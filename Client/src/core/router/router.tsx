@@ -3,6 +3,7 @@ import { AdminHomePage } from "../../features/admin/pages/AdminHomePage";
 import { LoginPage } from "../../features/auth/pages/LoginPage";
 import { RegisterPage } from "../../features/auth/pages/RegisterPage";
 import { SeasonHubPage } from "../../features/competitionSeasons/pages/SeasonHubPage";
+import { FixturesPage } from "../../features/matches/pages/FixturesPage";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { AppLayout } from "../layouts/AppLayout";
 import { PlayerAppLayout, RedirectToSeasons } from "../layouts/PlayerAppLayout";
@@ -57,7 +58,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "fixtures",
-                    element: <PlaceholderPage title="Maçlar" />,
+                    element: <FixturesPage />,
                   },
                   {
                     path: "predictions",

@@ -110,6 +110,41 @@
     background: radial-gradient(circle at center, #1e4d40 0%, #0b2b24 100%);
     border: 1px solid #1e4d40;
   }
+
+  .match-card {
+    background-color: #0b2b24;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid #1e4d40;
+    border-bottom: 1px solid #1e4d40;
+    border-left: 1px solid #1e4d40;
+    transition:
+      border-top-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .match-card:hover {
+    border-top-color: rgba(255, 255, 255, 0.4);
+    background: radial-gradient(circle at center, #1e4d40 0%, #0b2b24 100%);
+  }
+
+  .score-input {
+    background-color: #05120f;
+    border: 1px solid #1e4d40;
+    text-align: center;
+    -moz-appearance: textfield;
+  }
+
+  .score-input:focus {
+    outline: none;
+    border-color: #d4af37;
+    box-shadow: 0 0 0 1px #d4af37;
+  }
+
+  .score-input::-webkit-inner-spin-button,
+  .score-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 @keyframes authFadeIn {

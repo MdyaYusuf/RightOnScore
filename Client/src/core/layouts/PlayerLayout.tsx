@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { clearSeasonHub } from "../../features/competitionSeasons/seasonHubSlice";
+import { clearFixtures } from "../../features/matches/fixturesSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 const sideNavLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -34,6 +35,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
   async function handleLogout() {
     await dispatch(logout());
     dispatch(clearSeasonHub());
+    dispatch(clearFixtures());
     navigate("/login", { replace: true });
   }
 
