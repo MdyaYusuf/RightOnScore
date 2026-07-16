@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../features/auth/authSlice";
 import { clearSeasonHub } from "../../features/competitionSeasons/seasonHubSlice";
 import { clearFixtures } from "../../features/matches/fixturesSlice";
+import { clearLeaderboard } from "../../features/seasonStandings/leaderboardSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
 const sideNavLinkClass = ({ isActive }: { isActive: boolean }) =>
@@ -36,6 +37,7 @@ export function PlayerLayout({ children }: PlayerLayoutProps) {
     await dispatch(logout());
     dispatch(clearSeasonHub());
     dispatch(clearFixtures());
+    dispatch(clearLeaderboard());
     navigate("/login", { replace: true });
   }
 

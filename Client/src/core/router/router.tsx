@@ -4,6 +4,7 @@ import { LoginPage } from "../../features/auth/pages/LoginPage";
 import { RegisterPage } from "../../features/auth/pages/RegisterPage";
 import { SeasonHubPage } from "../../features/competitionSeasons/pages/SeasonHubPage";
 import { FixturesPage } from "../../features/matches/pages/FixturesPage";
+import { LeaderboardPage } from "../../features/seasonStandings/pages/LeaderboardPage";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { AppLayout } from "../layouts/AppLayout";
 import { PlayerAppLayout, RedirectToSeasons } from "../layouts/PlayerAppLayout";
@@ -66,7 +67,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: "leaderboard",
-                    element: <PlaceholderPage title="Sıralama" />,
+                    element: <LeaderboardPage />,
                   },
                 ],
               },
