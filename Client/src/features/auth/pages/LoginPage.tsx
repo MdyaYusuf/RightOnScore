@@ -22,7 +22,7 @@ export function LoginPage() {
 
     try {
       await dispatch(login({ email, password })).unwrap();
-      navigate("/", { replace: true });
+      navigate("/seasons", { replace: true });
     } catch {
       // Errors are surfaced by the API client toast.
     } finally {

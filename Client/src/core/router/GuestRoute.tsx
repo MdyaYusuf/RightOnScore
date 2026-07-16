@@ -6,7 +6,7 @@ export function GuestRoute() {
   const status = useAppSelector((state) => state.auth.status);
 
   if (status === "authenticated") {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/seasons" replace />;
   }
 
   return <Outlet />;

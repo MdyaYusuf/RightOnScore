@@ -22,6 +22,7 @@
   --color-secondary: #e9c349;
   --color-on-secondary: #3c2f00;
   --color-secondary-container: #af8d11;
+  --color-on-secondary-container: #342800;
   --color-secondary-fixed: #ffe088;
   --color-tertiary: #a0d1bf;
   --color-error: #ffb4ab;
@@ -98,6 +99,16 @@
       "GRAD" 0,
       "opsz" 24;
     user-select: none;
+  }
+
+  .card-level-1 {
+    background-color: #0b2b24;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .card-level-2 {
+    background: radial-gradient(circle at center, #1e4d40 0%, #0b2b24 100%);
+    border: 1px solid #1e4d40;
   }
 }
 
