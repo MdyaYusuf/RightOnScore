@@ -96,7 +96,7 @@ export function AdminHomePage() {
                   </div>
                 </div>
                 <Link
-                  to="/admin/fixtures"
+                  to={`/admin/seasons/${match.competitionSeasonId}/fixtures`}
                   className="inline-flex items-center justify-center gap-2 rounded bg-secondary px-5 py-2.5 font-label text-[14px] font-semibold tracking-[0.05em] text-on-secondary shadow-[0_0_15px_rgba(233,195,73,0.1)] transition-colors hover:bg-secondary/90"
                 >
                   <span className="material-symbols-outlined text-[18px]">edit_document</span>

@@ -34,12 +34,15 @@ public sealed record MatchPreviewDto
   public Guid CompetitionSeasonId { get; init; }
   public Guid? CompetitionStageId { get; init; }
   public CompetitionStagePreviewDto? CompetitionStage { get; init; }
+  public Guid? CompetitionGroupId { get; init; }
+  public CompetitionGroupPreviewDto? CompetitionGroup { get; init; }
   public Guid HomeTeamId { get; init; }
   public TeamPreviewDto HomeTeam { get; init; } = default!;
   public Guid AwayTeamId { get; init; }
   public TeamPreviewDto AwayTeam { get; init; } = default!;
   public DateTime KickoffTime { get; init; }
   public MatchStatus Status { get; init; }
+  public int? Round { get; init; }
   public int? HomeScore { get; init; }
   public int? AwayScore { get; init; }
   public Guid? AdvancingTeamId { get; init; }

@@ -1,6 +1,13 @@
 import { apiClient } from "../../core/api/client";
 import type { ReturnModel } from "../../core/types/api";
-import type { MatchPreviewDto, MatchResponseDto, PagedResponse } from "./matchTypes";
+import type {
+  CreateMatchRequest,
+  CreatedMatchResponseDto,
+  MatchPreviewDto,
+  MatchResponseDto,
+  PagedResponse,
+  RecordMatchResultRequest,
+} from "./matchTypes";
 
 export function getAllMatches(
   pageNumber = 1,
@@ -33,4 +40,35 @@ export function getMatchesBySeason(
     `/api/matches/season/${competitionSeasonId}`,
     { silent: true },
   );
+}
+
+export function getMatchById(id: string): Promise<ReturnModel<MatchResponseDto>> {
+  return apiClient<MatchResponseDto>(`/api/matches/${id}`, { silent: true });
+}
+
+export function createMatch(
+  request: CreateMatchRequest,
+): Promise<ReturnModel<CreatedMatchResponseDto>> {
+  return apiClient<CreatedMatchResponseDto>("/api/matches", {
+    method: "POST",
+    body: request,
+    successToast: true,
+  });
+}
+
+export function recordMatchResult(
+  request: RecordMatchResultRequest,
+): Promise<ReturnModel<null>> {
+  return apiClient<null>("/api/matches/result", {
+    method: "PATCH",
+    body: request,
+    successToast: true,
+  });
+}
+
+export function deleteMatch(id: string): Promise<ReturnModel<null>> {
+  return apiClient<null>(`/api/matches/${id}`, {
+    method: "DELETE",
+    successToast: true,
+  });
 }

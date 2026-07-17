@@ -5,6 +5,7 @@ import competitionsReducer from "../../features/competitions/competitionsSlice";
 import seasonHubReducer from "../../features/competitionSeasons/seasonHubSlice";
 import seasonStructureReducer from "../../features/competitionSeasons/seasonStructureSlice";
 import seasonTeamsReducer from "../../features/competitionTeams/seasonTeamsSlice";
+import adminFixturesReducer from "../../features/matches/adminFixturesSlice";
 import fixturesReducer from "../../features/matches/fixturesSlice";
 import myPredictionsReducer from "../../features/matchPredictions/myPredictionsSlice";
 import leaderboardReducer from "../../features/seasonStandings/leaderboardSlice";
@@ -19,6 +20,7 @@ export const store = configureStore({
     seasonTeams: seasonTeamsReducer,
     seasonHub: seasonHubReducer,
     teams: teamsReducer,
+    adminFixtures: adminFixturesReducer,
     fixtures: fixturesReducer,
     leaderboard: leaderboardReducer,
     myPredictions: myPredictionsReducer,

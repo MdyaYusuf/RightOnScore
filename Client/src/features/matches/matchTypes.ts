@@ -19,20 +19,63 @@ export type CompetitionStagePreviewDto = {
   isActive: boolean;
 };
 
+export type CompetitionGroupMatchPreviewDto = {
+  id: string;
+  competitionStageId: string;
+  name: string;
+  displayOrder: number;
+  isActive: boolean;
+};
+
 export type MatchPreviewDto = {
   id: string;
   competitionSeasonId: string;
   competitionStageId: string | null;
   competitionStage: CompetitionStagePreviewDto | null;
+  competitionGroupId: string | null;
+  competitionGroup: CompetitionGroupMatchPreviewDto | null;
   homeTeamId: string;
   homeTeam: TeamPreviewDto;
   awayTeamId: string;
   awayTeam: TeamPreviewDto;
   kickoffTime: string;
   status: MatchStatus;
+  round: number | null;
   homeScore: number | null;
   awayScore: number | null;
   advancingTeamId: string | null;
+};
+
+export type CreateMatchRequest = {
+  competitionSeasonId: string;
+  competitionStageId?: string | null;
+  competitionGroupId?: string | null;
+  homeTeamId: string;
+  awayTeamId: string;
+  kickoffTime: string;
+  round?: number | null;
+  venue?: string | null;
+  status?: MatchStatus;
+};
+
+export type RecordMatchResultRequest = {
+  id: string;
+  homeScore: number;
+  awayScore: number;
+  advancingTeamId?: string | null;
+};
+
+export type CreatedMatchResponseDto = {
+  id: string;
+  kickoffTime: string;
+};
+
+export const MATCH_STATUS_LABEL: Record<MatchStatus, string> = {
+  1: "Planlandı",
+  2: "Canlı",
+  3: "Bitti",
+  4: "Ertelendi",
+  5: "İptal",
 };
 
 export type CompetitionSeasonMatchPreviewDto = {

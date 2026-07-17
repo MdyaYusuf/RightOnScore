@@ -1,8 +1,9 @@
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { clearAdminHome } from "../../features/admin/adminHomeSlice";
 import { clearCompetitions } from "../../features/competitions/competitionsSlice";
 import { clearSeasonStructure } from "../../features/competitionSeasons/seasonStructureSlice";
 import { clearSeasonTeams } from "../../features/competitionTeams/seasonTeamsSlice";
+import { clearAdminFixtures } from "../../features/matches/adminFixturesSlice";
 import { clearTeams } from "../../features/teams/teamsSlice";
 import { logout } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -15,10 +16,18 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
       : "border-transparent text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface",
   ].join(" ");
 
+function isFixturesPath(pathname: string): boolean {
+  return (
+    pathname === "/admin/fixtures" || /\/admin\/seasons\/[^/]+\/fixtures$/.test(pathname)
+  );
+}
+
 export function AdminLayout() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
   const user = useAppSelector((state) => state.auth.user);
+  const fixturesActive = isFixturesPath(pathname);
 
   async function handleLogout() {
     await dispatch(logout());
@@ -26,6 +35,7 @@ export function AdminLayout() {
     dispatch(clearCompetitions());
     dispatch(clearSeasonStructure());
     dispatch(clearSeasonTeams());
+    dispatch(clearAdminFixtures());
     dispatch(clearTeams());
     navigate("/login", { replace: true });
   }
@@ -69,8 +79,18 @@ export function AdminLayout() {
             <span className="material-symbols-outlined">groups</span>
             Takımlar
           </NavLink>
-          <NavLink to="/admin/fixtures" className={navLinkClass}>
-            <span className="material-symbols-outlined">sports_soccer</span>
+          <NavLink
+            to="/admin/fixtures"
+            className={() => navLinkClass({ isActive: fixturesActive })}
+          >
+            <span
+              className="material-symbols-outlined"
+              style={{
+                fontVariationSettings: fixturesActive ? "'FILL' 1" : "'FILL' 0",
+              }}
+            >
+              sports_soccer
+            </span>
             Maçlar
           </NavLink>
         </nav>
@@ -189,10 +209,10 @@ export function AdminLayout() {
         </NavLink>
         <NavLink
           to="/admin/fixtures"
-          className={({ isActive }) =>
+          className={() =>
             [
               "flex flex-col items-center gap-0.5 px-2 py-1 text-[11px] font-medium",
-              isActive ? "text-secondary" : "text-on-surface-variant",
+              fixturesActive ? "text-secondary" : "text-on-surface-variant",
             ].join(" ")
           }
         >
