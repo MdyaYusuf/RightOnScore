@@ -14,6 +14,15 @@ import { AdminRoute } from "./AdminRoute";
 import { GuestRoute } from "./GuestRoute";
 import { ProtectedRoute } from "./ProtectedRoute";
 
+function AdminPlaceholderPage({ title }: { title: string }) {
+  return (
+    <div className="mx-auto max-w-[1440px]">
+      <h2 className="font-display text-3xl font-bold text-on-surface">{title}</h2>
+      <p className="mt-2 text-on-surface-variant">Bu sayfa yakında eklenecek.</p>
+    </div>
+  );
+}
+
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -77,6 +86,18 @@ export const router = createBrowserRouter([
               {
                 index: true,
                 element: <AdminHomePage />,
+              },
+              {
+                path: "competitions",
+                element: <AdminPlaceholderPage title="Yarışmalar" />,
+              },
+              {
+                path: "teams",
+                element: <AdminPlaceholderPage title="Takımlar" />,
+              },
+              {
+                path: "fixtures",
+                element: <AdminPlaceholderPage title="Maçlar" />,
               },
             ],
           },

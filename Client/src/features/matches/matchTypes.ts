@@ -35,6 +35,44 @@ export type MatchPreviewDto = {
   advancingTeamId: string | null;
 };
 
+export type CompetitionSeasonMatchPreviewDto = {
+  id: string;
+  competitionId: string;
+  name: string;
+  status: number;
+  isActive: boolean;
+};
+
+export type MatchResponseDto = {
+  id: string;
+  competitionSeasonId: string;
+  competitionSeason: CompetitionSeasonMatchPreviewDto;
+  competitionStageId: string | null;
+  competitionStage: CompetitionStagePreviewDto | null;
+  competitionGroupId: string | null;
+  homeTeamId: string;
+  homeTeam: TeamPreviewDto;
+  awayTeamId: string;
+  awayTeam: TeamPreviewDto;
+  kickoffTime: string;
+  status: MatchStatus;
+  round: number | null;
+  venue: string | null;
+  homeScore: number | null;
+  awayScore: number | null;
+  advancingTeamId: string | null;
+};
+
+export type PagedResponse<T> = {
+  items: T[];
+  currentPage: number;
+  pageSize: number;
+  totalPages: number;
+  totalCount: number;
+  hasPreviousPage: boolean;
+  hasNextPage: boolean;
+};
+
 export type MatchPredictionPreviewDto = {
   id: string;
   matchId: string;
