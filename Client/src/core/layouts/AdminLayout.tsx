@@ -4,6 +4,7 @@ import { clearCompetitions } from "../../features/competitions/competitionsSlice
 import { clearSeasonStructure } from "../../features/competitionSeasons/seasonStructureSlice";
 import { clearSeasonTeams } from "../../features/competitionTeams/seasonTeamsSlice";
 import { clearAdminFixtures } from "../../features/matches/adminFixturesSlice";
+import { clearAdminPredictions } from "../../features/matchPredictions/adminPredictionsSlice";
 import { clearTeams } from "../../features/teams/teamsSlice";
 import { logout } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
@@ -18,7 +19,9 @@ const navLinkClass = ({ isActive }: { isActive: boolean }) =>
 
 function isFixturesPath(pathname: string): boolean {
   return (
-    pathname === "/admin/fixtures" || /\/admin\/seasons\/[^/]+\/fixtures$/.test(pathname)
+    pathname === "/admin/fixtures" ||
+    /\/admin\/seasons\/[^/]+\/fixtures$/.test(pathname) ||
+    /\/admin\/matches\/[^/]+\/predictions$/.test(pathname)
   );
 }
 
@@ -36,6 +39,7 @@ export function AdminLayout() {
     dispatch(clearSeasonStructure());
     dispatch(clearSeasonTeams());
     dispatch(clearAdminFixtures());
+    dispatch(clearAdminPredictions());
     dispatch(clearTeams());
     navigate("/login", { replace: true });
   }

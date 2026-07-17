@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AdminHomePage } from "../../features/admin/pages/AdminHomePage";
 import { LoginPage } from "../../features/auth/pages/LoginPage";
 import { RegisterPage } from "../../features/auth/pages/RegisterPage";
@@ -7,6 +7,7 @@ import { SeasonStructurePage } from "../../features/competitionSeasons/pages/Sea
 import { SeasonHubPage } from "../../features/competitionSeasons/pages/SeasonHubPage";
 import { AdminFixturesPage } from "../../features/matches/pages/AdminFixturesPage";
 import { FixturesPage } from "../../features/matches/pages/FixturesPage";
+import { AdminPredictionsPage } from "../../features/matchPredictions/pages/AdminPredictionsPage";
 import { MyPredictionsPage } from "../../features/matchPredictions/pages/MyPredictionsPage";
 import { LeaderboardPage } from "../../features/seasonStandings/pages/LeaderboardPage";
 import { TeamsPage } from "../../features/teams/pages/TeamsPage";
@@ -106,6 +107,14 @@ export const router = createBrowserRouter([
               {
                 path: "fixtures",
                 element: <AdminFixturesPage />,
+              },
+              {
+                path: "matches/:matchId/predictions",
+                element: <AdminPredictionsPage />,
+              },
+              {
+                path: "predictions",
+                element: <Navigate to="/admin/fixtures" replace />,
               },
             ],
           },

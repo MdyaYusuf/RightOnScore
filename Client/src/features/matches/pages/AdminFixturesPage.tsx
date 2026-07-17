@@ -559,6 +559,16 @@ export function AdminFixturesPage() {
               </p>
             </div>
             <div className="flex flex-col p-2">
+              <button
+                type="button"
+                className="rounded px-4 py-3 text-left font-label text-[14px] font-semibold text-on-surface transition-colors hover:bg-surface-container-high"
+                onClick={() => {
+                  dispatch(closeDialog());
+                  navigate(`/admin/matches/${selectedMatch.id}/predictions`);
+                }}
+              >
+                Tahminleri Gör
+              </button>
               {canRecordResult(selectedMatch.status) && (
                 <button
                   type="button"
