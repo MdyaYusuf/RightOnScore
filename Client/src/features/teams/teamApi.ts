@@ -49,6 +49,10 @@ export function getAllTeams(
   });
 }
 
+export function getActiveTeams(): Promise<ReturnModel<TeamPreviewDto[]>> {
+  return apiClient<TeamPreviewDto[]>("/api/teams/active", { silent: true });
+}
+
 export function getTeamById(id: string): Promise<ReturnModel<TeamResponseDto>> {
   return apiClient<TeamResponseDto>(`/api/teams/${id}`, { silent: true });
 }

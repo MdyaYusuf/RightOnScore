@@ -186,6 +186,16 @@ export function SeasonStructurePage() {
           </p>
         </div>
         <div className="flex flex-wrap gap-4">
+          {selectedSeasonId && (
+            <button
+              type="button"
+              className="inline-flex items-center gap-2 rounded border border-outline-variant/50 px-6 py-2.5 font-label text-[14px] font-semibold tracking-[0.05em] text-on-surface-variant transition-all hover:border-secondary hover:text-secondary"
+              onClick={() => navigate(`/admin/seasons/${selectedSeasonId}/teams`)}
+            >
+              <span className="material-symbols-outlined text-[18px]">group_add</span>
+              Takımları Yönet
+            </button>
+          )}
           <button
             type="button"
             className="inline-flex items-center gap-2 rounded border border-outline-variant/50 px-6 py-2.5 font-label text-[14px] font-semibold tracking-[0.05em] text-on-surface-variant transition-all hover:border-secondary hover:text-secondary"

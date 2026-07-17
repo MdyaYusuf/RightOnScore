@@ -9,6 +9,7 @@ import { FixturesPage } from "../../features/matches/pages/FixturesPage";
 import { MyPredictionsPage } from "../../features/matchPredictions/pages/MyPredictionsPage";
 import { LeaderboardPage } from "../../features/seasonStandings/pages/LeaderboardPage";
 import { TeamsPage } from "../../features/teams/pages/TeamsPage";
+import { SeasonTeamsPage } from "../../features/competitionTeams/pages/SeasonTeamsPage";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { AppLayout } from "../layouts/AppLayout";
 import { PlayerAppLayout, RedirectToSeasons } from "../layouts/PlayerAppLayout";
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
               {
                 path: "competitions/:competitionId/structure",
                 element: <SeasonStructurePage />,
+              },
+              {
+                path: "seasons/:seasonId/teams",
+                element: <SeasonTeamsPage />,
               },
               {
                 path: "teams",
