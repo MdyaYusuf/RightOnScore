@@ -8,6 +8,7 @@ import { SeasonHubPage } from "../../features/competitionSeasons/pages/SeasonHub
 import { FixturesPage } from "../../features/matches/pages/FixturesPage";
 import { MyPredictionsPage } from "../../features/matchPredictions/pages/MyPredictionsPage";
 import { LeaderboardPage } from "../../features/seasonStandings/pages/LeaderboardPage";
+import { TeamsPage } from "../../features/teams/pages/TeamsPage";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { AppLayout } from "../layouts/AppLayout";
 import { PlayerAppLayout, RedirectToSeasons } from "../layouts/PlayerAppLayout";
@@ -99,7 +100,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "teams",
-                element: <AdminPlaceholderPage title="Takımlar" />,
+                element: <TeamsPage />,
               },
               {
                 path: "fixtures",

@@ -7,6 +7,7 @@ import seasonStructureReducer from "../../features/competitionSeasons/seasonStru
 import fixturesReducer from "../../features/matches/fixturesSlice";
 import myPredictionsReducer from "../../features/matchPredictions/myPredictionsSlice";
 import leaderboardReducer from "../../features/seasonStandings/leaderboardSlice";
+import teamsReducer from "../../features/teams/teamsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     competitions: competitionsReducer,
     seasonStructure: seasonStructureReducer,
     seasonHub: seasonHubReducer,
+    teams: teamsReducer,
     fixtures: fixturesReducer,
     leaderboard: leaderboardReducer,
     myPredictions: myPredictionsReducer,

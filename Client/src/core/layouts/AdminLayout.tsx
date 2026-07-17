@@ -2,6 +2,7 @@ import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { clearAdminHome } from "../../features/admin/adminHomeSlice";
 import { clearCompetitions } from "../../features/competitions/competitionsSlice";
 import { clearSeasonStructure } from "../../features/competitionSeasons/seasonStructureSlice";
+import { clearTeams } from "../../features/teams/teamsSlice";
 import { logout } from "../../features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 
@@ -23,6 +24,7 @@ export function AdminLayout() {
     dispatch(clearAdminHome());
     dispatch(clearCompetitions());
     dispatch(clearSeasonStructure());
+    dispatch(clearTeams());
     navigate("/login", { replace: true });
   }
 
