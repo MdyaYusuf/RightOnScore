@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { AdminHomePage } from "../../features/admin/pages/AdminHomePage";
 import { LoginPage } from "../../features/auth/pages/LoginPage";
 import { RegisterPage } from "../../features/auth/pages/RegisterPage";
+import { CompetitionsPage } from "../../features/competitions/pages/CompetitionsPage";
 import { SeasonHubPage } from "../../features/competitionSeasons/pages/SeasonHubPage";
 import { FixturesPage } from "../../features/matches/pages/FixturesPage";
 import { MyPredictionsPage } from "../../features/matchPredictions/pages/MyPredictionsPage";
@@ -89,7 +90,7 @@ export const router = createBrowserRouter([
               },
               {
                 path: "competitions",
-                element: <AdminPlaceholderPage title="Yarışmalar" />,
+                element: <CompetitionsPage />,
               },
               {
                 path: "teams",
