@@ -1,6 +1,7 @@
 import { apiClient } from "../../core/api/client";
 import type { ReturnModel } from "../../core/types/api";
 import type {
+  CompetitionResponseDto,
   CreateCompetitionRequest,
   CreatedCompetitionResponseDto,
   CompetitionsPageResult,
@@ -17,6 +18,14 @@ export function getAllCompetitions(
   });
 
   return apiClient<CompetitionsPageResult>(`/api/competitions?${params.toString()}`, {
+    silent: true,
+  });
+}
+
+export function getCompetitionById(
+  id: string,
+): Promise<ReturnModel<CompetitionResponseDto>> {
+  return apiClient<CompetitionResponseDto>(`/api/competitions/${id}`, {
     silent: true,
   });
 }

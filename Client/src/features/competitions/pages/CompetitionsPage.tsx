@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../../core/store/hooks";
 import {
@@ -202,17 +203,27 @@ export function CompetitionsPage() {
                   </div>
 
                   <div className="text-left md:col-span-1 md:text-right">
-                    <button
-                      type="button"
-                      className="text-tertiary transition-colors hover:text-secondary"
-                      aria-label="Düzenle"
-                      onClick={(event) => {
-                        event.stopPropagation();
-                        dispatch(openEditPanel(competition.id));
-                      }}
-                    >
-                      <span className="material-symbols-outlined">edit</span>
-                    </button>
+                    <div className="inline-flex items-center gap-1">
+                      <Link
+                        to={`/admin/competitions/${competition.id}/structure`}
+                        className="text-tertiary transition-colors hover:text-secondary"
+                        aria-label="Sezon yapısı"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <span className="material-symbols-outlined">account_tree</span>
+                      </Link>
+                      <button
+                        type="button"
+                        className="text-tertiary transition-colors hover:text-secondary"
+                        aria-label="Düzenle"
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          dispatch(openEditPanel(competition.id));
+                        }}
+                      >
+                        <span className="material-symbols-outlined">edit</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               );
