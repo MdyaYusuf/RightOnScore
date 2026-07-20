@@ -5,7 +5,10 @@ import type {
   MatchPredictionPreviewDto,
   UpdateMatchPredictionRequest,
 } from "../matches/matchTypes";
-import type { MatchPredictionResponseDto } from "./matchPredictionTypes";
+import type {
+  MatchPredictionResponseDto,
+  MatchPredictionsRevealResponseDto,
+} from "./matchPredictionTypes";
 
 export function getMyPredictionsBySeason(
   competitionSeasonId: string,
@@ -21,6 +24,15 @@ export function getPredictionsByMatchId(
 ): Promise<ReturnModel<MatchPredictionResponseDto[]>> {
   return apiClient<MatchPredictionResponseDto[]>(
     `/api/matchpredictions/match/${matchId}`,
+    { silent: true },
+  );
+}
+
+export function getRevealedPredictionsByMatchId(
+  matchId: string,
+): Promise<ReturnModel<MatchPredictionsRevealResponseDto>> {
+  return apiClient<MatchPredictionsRevealResponseDto>(
+    `/api/matchpredictions/match/${matchId}/revealed`,
     { silent: true },
   );
 }

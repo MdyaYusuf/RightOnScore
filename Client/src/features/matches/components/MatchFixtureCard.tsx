@@ -215,24 +215,30 @@ export function MatchFixtureCard({
         ) : null}
 
         {!locked ? (
-          <button
-            type="button"
-            disabled={!canSubmit}
-            onClick={() => void handleSubmit()}
-            className={[
-              "w-full rounded-[0.5rem] py-3 font-body text-[18px] font-semibold transition-all duration-300",
-              hasExistingPrediction
-                ? "border-2 border-secondary bg-transparent text-secondary hover:bg-secondary/10"
-                : "bg-secondary text-black opacity-100 hover:bg-secondary-fixed md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100",
-              !canSubmit ? "cursor-not-allowed !opacity-50" : "",
-            ].join(" ")}
-          >
-            {isSaving
-              ? "Kaydediliyor..."
-              : hasExistingPrediction
-                ? "Tahmini Güncelle"
-                : "Tahmini kaydet"}
-          </button>
+          <>
+            <button
+              type="button"
+              disabled={!canSubmit}
+              onClick={() => void handleSubmit()}
+              className={[
+                "w-full rounded-[0.5rem] py-3 font-body text-[18px] font-semibold transition-all duration-300",
+                hasExistingPrediction
+                  ? "border-2 border-secondary bg-transparent text-secondary hover:bg-secondary/10"
+                  : "bg-secondary text-black opacity-100 hover:bg-secondary-fixed md:opacity-0 md:group-hover:opacity-100 md:focus:opacity-100",
+                !canSubmit ? "cursor-not-allowed !opacity-50" : "",
+              ].join(" ")}
+            >
+              {isSaving
+                ? "Kaydediliyor..."
+                : hasExistingPrediction
+                  ? "Tahmini Güncelle"
+                  : "Tahmini kaydet"}
+            </button>
+            <p className="mt-3 flex items-center justify-center gap-1.5 text-center font-label text-[11px] text-on-surface-variant/80">
+              <span className="material-symbols-outlined text-[14px]">lock</span>
+              Diğer oyuncuların tahminleri maç başlayınca görünür.
+            </p>
+          </>
         ) : null}
       </div>
     </div>

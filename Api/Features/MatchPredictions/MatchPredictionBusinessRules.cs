@@ -72,6 +72,59 @@ public class MatchPredictionBusinessRules(
     }
   }
 
+  /// <summary>
+  /// Predictions become visible to non-owners once kickoff has passed,
+  /// or when the match is already live, finished, or cancelled.
+  /// Uses the same local clock as kickoff lock rules.
+  /// </summary>
+  public bool ArePredictionsRevealed(Match match, DateTime? now = null)
+  {
+    DateTime clock = now ?? DateTime.Now;
+
+    if (match.Status is MatchStatus.Live or MatchStatus.Finished or MatchStatus.Cancelled)
+    {
+      return true;
+    }
+
+    return HasKickoffPassed(match, clock);
+  }
+
+  public bool HasKickoffPassed(Match match, DateTime? now = null)
+  {
+    DateTime clock = now ?? DateTime.Now;
+    return match.KickoffTime <= clock;
+  }
+
+  public bool CanViewPredictionScores(
+    Match match,
+    Guid predictionOwnerId,
+    Guid viewerId,
+    string userRole,
+    DateTime? now = null)
+  {
+    if (userRole == "Admin" || predictionOwnerId == viewerId)
+    {
+      return true;
+    }
+
+    return ArePredictionsRevealed(match, now);
+  }
+
+  public void EnsureCanViewPredictionScores(
+    Match match,
+    Guid predictionOwnerId,
+    Guid viewerId,
+    string userRole,
+    DateTime? now = null)
+  {
+    if (CanViewPredictionScores(match, predictionOwnerId, viewerId, userRole, now))
+    {
+      return;
+    }
+
+    throw new ForbiddenException("Diğer kullanıcıların tahminleri maç başlayana kadar gizlidir.");
+  }
+
   public void UserMustOwnPredictionOrBeAdmin(MatchPrediction prediction, Guid currentUserId, string userRole)
   {
     if (prediction.UserId != currentUserId && userRole != "Admin")
@@ -150,7 +203,7 @@ public class MatchPredictionBusinessRules(
       throw new BusinessException("Yalnızca planlanmış maçlar için skor tahmini yapılabilir.");
     }
 
-    if (match.KickoffTime <= DateTime.Now)
+    if (HasKickoffPassed(match))
     {
       throw new BusinessException("Maç başladıktan sonra skor tahmini yapılamaz veya güncellenemez.");
     }
@@ -158,7 +211,7 @@ public class MatchPredictionBusinessRules(
 
   public void PredictionCanOnlyBeModifiedBeforeKickoff(Match match)
   {
-    if (match.KickoffTime <= DateTime.Now)
+    if (HasKickoffPassed(match))
     {
       throw new BusinessException("Maç başladıktan sonra skor tahmini güncellenemez veya silinemez.");
     }

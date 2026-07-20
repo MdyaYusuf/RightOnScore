@@ -15,3 +15,20 @@ export type MatchPredictionResponseDto = {
   predictedAdvancingTeamId: string | null;
   pointsEarned: number | null;
 };
+
+export type MatchPredictionRevealItemDto = {
+  id: string;
+  userId: string;
+  user: UserPreviewDto;
+  predictedHomeScore: number;
+  predictedAwayScore: number;
+  predictedAdvancingTeamId: string | null;
+  pointsEarned: number | null;
+};
+
+export type MatchPredictionsRevealResponseDto = {
+  matchId: string;
+  areRevealed: boolean;
+  predictionCount: number;
+  predictions: MatchPredictionRevealItemDto[];
+};

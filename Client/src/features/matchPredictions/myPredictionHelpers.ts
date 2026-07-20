@@ -1,8 +1,23 @@
-import { MATCH_STATUS, type MatchPredictionPreviewDto } from "../matches/matchTypes";
+import { MATCH_STATUS, type MatchPredictionPreviewDto, type MatchPreviewDto } from "../matches/matchTypes";
 
 export type PredictionFilter = "all" | "pending" | "scored";
 
 export type PredictionOutcome = "pending" | "exact" | "partial" | "wrong";
+
+export function arePredictionsRevealed(
+  match: Pick<MatchPreviewDto, "kickoffTime" | "status">,
+  now = new Date(),
+): boolean {
+  if (
+    match.status === MATCH_STATUS.Live ||
+    match.status === MATCH_STATUS.Finished ||
+    match.status === MATCH_STATUS.Cancelled
+  ) {
+    return true;
+  }
+
+  return new Date(match.kickoffTime).getTime() <= now.getTime();
+}
 
 export function isPredictionPending(prediction: MatchPredictionPreviewDto): boolean {
   return prediction.pointsEarned === null || prediction.pointsEarned === undefined;

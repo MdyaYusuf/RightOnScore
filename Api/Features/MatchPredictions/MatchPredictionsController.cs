@@ -49,6 +49,19 @@ public class MatchPredictionsController(IMatchPredictionService _matchPrediction
     return CreateActionResult(result);
   }
 
+  [HttpGet("match/{matchId:guid}/revealed")]
+  [Authorize]
+  public async Task<IActionResult> GetRevealedByMatchId(Guid matchId, CancellationToken cancellationToken = default)
+  {
+    var result = await _matchPredictionService.GetRevealedByMatchIdAsync(
+      matchId: matchId,
+      currentUserId: GetUserId(),
+      userRole: GetUserRole(),
+      cancellationToken: cancellationToken);
+
+    return CreateActionResult(result);
+  }
+
   [HttpGet("match/{matchId:guid}/mine")]
   [Authorize]
   public async Task<IActionResult> GetMineByMatchId(Guid matchId, CancellationToken cancellationToken = default)

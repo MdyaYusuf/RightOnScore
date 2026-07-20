@@ -28,6 +28,25 @@ public sealed record MatchPredictionPreviewDto
   public int? PointsEarned { get; init; }
 }
 
+public sealed record MatchPredictionRevealItemDto
+{
+  public Guid Id { get; init; }
+  public Guid UserId { get; init; }
+  public UserPreviewDto User { get; init; } = default!;
+  public int PredictedHomeScore { get; init; }
+  public int PredictedAwayScore { get; init; }
+  public Guid? PredictedAdvancingTeamId { get; init; }
+  public int? PointsEarned { get; init; }
+}
+
+public sealed record MatchPredictionsRevealResponseDto
+{
+  public Guid MatchId { get; init; }
+  public bool AreRevealed { get; init; }
+  public int PredictionCount { get; init; }
+  public List<MatchPredictionRevealItemDto> Predictions { get; init; } = [];
+}
+
 public sealed record CreatedMatchPredictionResponseDto
 {
   public Guid Id { get; init; }

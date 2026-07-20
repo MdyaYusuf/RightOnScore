@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Api.Core.Repositories;
 using Api.Core.Responses;
+using Api.Features.Matches;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
@@ -60,7 +61,14 @@ public class MatchPredictionService(
       enableTracking,
       cancellationToken);
 
-    _businessRules.UserMustOwnPredictionOrBeAdmin(prediction, currentUserId, userRole);
+    Match match = prediction.Match
+      ?? await _businessRules.MatchMustExistAsync(prediction.MatchId, cancellationToken: cancellationToken);
+
+    _businessRules.EnsureCanViewPredictionScores(
+      match,
+      prediction.UserId,
+      currentUserId,
+      userRole);
 
     MatchPredictionResponseDto response = _mapper.EntityToResponseDto(prediction);
 
@@ -185,16 +193,63 @@ public class MatchPredictionService(
     };
   }
 
+  public async Task<ReturnModel<MatchPredictionsRevealResponseDto>> GetRevealedByMatchIdAsync(
+    Guid matchId,
+    Guid currentUserId,
+    string userRole,
+    CancellationToken cancellationToken = default)
+  {
+    await _businessRules.UserMustExistAndBeActiveAsync(currentUserId, cancellationToken);
+    Match match = await _businessRules.MatchMustExistAsync(matchId, cancellationToken: cancellationToken);
+
+    List<MatchPrediction> predictions = await _matchPredictionRepository.GetByMatchIdAsync(matchId, cancellationToken);
+    bool areRevealed = _businessRules.ArePredictionsRevealed(match) || userRole == "Admin";
+
+    var response = new MatchPredictionsRevealResponseDto
+    {
+      MatchId = matchId,
+      AreRevealed = areRevealed,
+      PredictionCount = predictions.Count,
+      Predictions = areRevealed
+        ? _mapper.EntityToRevealItemDtoList(predictions)
+        : []
+    };
+
+    string message = areRevealed
+      ? "Maça ait skor tahminleri başarılı bir şekilde getirildi."
+      : "Tahminler maç başlayana kadar gizlidir. Katılım sayısı döndürüldü.";
+
+    return new ReturnModel<MatchPredictionsRevealResponseDto>()
+    {
+      Success = true,
+      Message = message,
+      Data = response,
+      StatusCode = 200
+    };
+  }
+
   public async Task<ReturnModel<List<MatchPredictionPreviewDto>>> GetByUserIdAsync(
     Guid userId,
     Guid currentUserId,
     string userRole,
     CancellationToken cancellationToken = default)
   {
-    _businessRules.UserMustBeOwnerOrAdmin(userId, currentUserId, userRole);
     await _businessRules.UserMustExistAndBeActiveAsync(userId, cancellationToken);
+    await _businessRules.UserMustExistAndBeActiveAsync(currentUserId, cancellationToken);
 
     List<MatchPrediction> predictions = await _matchPredictionRepository.GetByUserIdAsync(userId, cancellationToken);
+
+    bool isSelfOrAdmin = userId == currentUserId || userRole == "Admin";
+
+    if (!isSelfOrAdmin)
+    {
+      predictions = predictions
+        .Where(prediction =>
+          prediction.Match != null
+          && _businessRules.ArePredictionsRevealed(prediction.Match))
+        .ToList();
+    }
+
     List<MatchPredictionPreviewDto> responseDtos = _mapper.EntityToPreviewDtoList(predictions);
 
     return new ReturnModel<List<MatchPredictionPreviewDto>>()

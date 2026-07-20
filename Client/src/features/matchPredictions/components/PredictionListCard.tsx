@@ -5,6 +5,7 @@ import {
   type PredictionOutcome,
 } from "../myPredictionHelpers";
 import type { MatchPredictionPreviewDto } from "../../matches/matchTypes";
+import { RevealedPredictionsPanel } from "./RevealedPredictionsPanel";
 
 type PredictionListCardProps = {
   prediction: MatchPredictionPreviewDto;
@@ -21,87 +22,91 @@ export function PredictionListCard({ prediction }: PredictionListCardProps) {
   return (
     <div
       className={[
-        "card-border inner-glow relative flex flex-col items-center gap-4 overflow-hidden rounded-[0.75rem] p-4 transition-colors sm:flex-row",
+        "card-border inner-glow relative flex flex-col overflow-hidden rounded-[0.75rem] p-4 transition-colors",
         cardToneClass(outcome, isLive),
       ].join(" ")}
     >
       {isLive ? <div className="absolute top-0 left-0 h-full w-1 bg-secondary" /> : null}
 
-      <div className="w-full flex-shrink-0 text-center sm:w-20">
-        {statusBadge.tone === "time" ? (
-          <div className="font-body text-[16px] font-semibold text-on-surface-variant">
-            {statusBadge.label}
-          </div>
-        ) : (
-          <>
-            {statusBadge.tone === "live" ? (
-              <div className="mb-1 text-xs text-on-surface-variant">
-                {formatKickoffOnly(prediction.match.kickoffTime)}
-              </div>
-            ) : null}
-            <div
-              className={[
-                "inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase",
-                statusBadge.tone === "live"
-                  ? "animate-pulse bg-[#93000a] text-white"
-                  : "bg-surface-variant text-on-surface-variant",
-              ].join(" ")}
-            >
+      <div className="flex flex-col items-center gap-4 sm:flex-row">
+        <div className="w-full flex-shrink-0 text-center sm:w-20">
+          {statusBadge.tone === "time" ? (
+            <div className="font-body text-[16px] font-semibold text-on-surface-variant">
               {statusBadge.label}
             </div>
-          </>
-        )}
-      </div>
-
-      <div className="flex w-full flex-1 items-center justify-between px-2 sm:px-4">
-        <div className="flex-1 truncate pr-3 text-right font-body text-[16px] font-semibold text-on-surface sm:text-[18px]">
-          {homeName}
+          ) : (
+            <>
+              {statusBadge.tone === "live" ? (
+                <div className="mb-1 text-xs text-on-surface-variant">
+                  {formatKickoffOnly(prediction.match.kickoffTime)}
+                </div>
+              ) : null}
+              <div
+                className={[
+                  "inline-block rounded px-2 py-0.5 text-[10px] font-bold uppercase",
+                  statusBadge.tone === "live"
+                    ? "animate-pulse bg-[#93000a] text-white"
+                    : "bg-surface-variant text-on-surface-variant",
+                ].join(" ")}
+              >
+                {statusBadge.label}
+              </div>
+            </>
+          )}
         </div>
 
-        <PredictedScoreBox prediction={prediction} outcome={outcome} />
+        <div className="flex w-full flex-1 items-center justify-between px-2 sm:px-4">
+          <div className="flex-1 truncate pr-3 text-right font-body text-[16px] font-semibold text-on-surface sm:text-[18px]">
+            {homeName}
+          </div>
 
-        <div className="flex-1 truncate pl-3 text-left font-body text-[16px] font-semibold text-on-surface sm:text-[18px]">
-          {awayName}
+          <PredictedScoreBox prediction={prediction} outcome={outcome} />
+
+          <div className="flex-1 truncate pl-3 text-left font-body text-[16px] font-semibold text-on-surface sm:text-[18px]">
+            {awayName}
+          </div>
+        </div>
+
+        <div className="mt-2 w-full flex-shrink-0 border-t border-outline-variant/10 pt-3 text-center sm:mt-0 sm:w-24 sm:border-0 sm:pt-0 sm:text-right">
+          {outcome === "pending" ? (
+            <>
+              <div className="mb-1 font-label text-[12px] font-medium tracking-[0.05em] text-on-surface-variant uppercase">
+                Durum
+              </div>
+              <div
+                className={[
+                  "font-body text-[16px] font-semibold sm:text-[18px]",
+                  isLive ? "text-secondary" : "text-outline",
+                ].join(" ")}
+              >
+                Bekliyor
+              </div>
+              {actualScore ? (
+                <div className="mt-1 text-[10px] text-on-surface-variant">Gerçek: {actualScore}</div>
+              ) : null}
+            </>
+          ) : (
+            <>
+              <div className="mb-1 font-label text-[12px] font-medium tracking-[0.05em] text-on-surface-variant uppercase">
+                Puan
+              </div>
+              <div
+                className={[
+                  "font-display text-[28px] font-bold leading-none md:text-[36px]",
+                  pointsClass(outcome),
+                ].join(" ")}
+              >
+                {formatPoints(prediction.pointsEarned ?? 0)}
+              </div>
+              {actualScore ? (
+                <div className="mt-1 text-[10px] text-on-surface-variant">Gerçek: {actualScore}</div>
+              ) : null}
+            </>
+          )}
         </div>
       </div>
 
-      <div className="mt-2 w-full flex-shrink-0 border-t border-outline-variant/10 pt-3 text-center sm:mt-0 sm:w-24 sm:border-0 sm:pt-0 sm:text-right">
-        {outcome === "pending" ? (
-          <>
-            <div className="mb-1 font-label text-[12px] font-medium tracking-[0.05em] text-on-surface-variant uppercase">
-              Durum
-            </div>
-            <div
-              className={[
-                "font-body text-[16px] font-semibold sm:text-[18px]",
-                isLive ? "text-secondary" : "text-outline",
-              ].join(" ")}
-            >
-              Bekliyor
-            </div>
-            {actualScore ? (
-              <div className="mt-1 text-[10px] text-on-surface-variant">Gerçek: {actualScore}</div>
-            ) : null}
-          </>
-        ) : (
-          <>
-            <div className="mb-1 font-label text-[12px] font-medium tracking-[0.05em] text-on-surface-variant uppercase">
-              Puan
-            </div>
-            <div
-              className={[
-                "font-display text-[28px] font-bold leading-none md:text-[36px]",
-                pointsClass(outcome),
-              ].join(" ")}
-            >
-              {formatPoints(prediction.pointsEarned ?? 0)}
-            </div>
-            {actualScore ? (
-              <div className="mt-1 text-[10px] text-on-surface-variant">Gerçek: {actualScore}</div>
-            ) : null}
-          </>
-        )}
-      </div>
+      <RevealedPredictionsPanel match={prediction.match} />
     </div>
   );
 }

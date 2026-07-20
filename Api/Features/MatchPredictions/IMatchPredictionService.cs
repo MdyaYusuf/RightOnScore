@@ -43,6 +43,12 @@ public interface IMatchPredictionService
     string userRole,
     CancellationToken cancellationToken = default);
 
+  Task<ReturnModel<MatchPredictionsRevealResponseDto>> GetRevealedByMatchIdAsync(
+    Guid matchId,
+    Guid currentUserId,
+    string userRole,
+    CancellationToken cancellationToken = default);
+
   Task<ReturnModel<List<MatchPredictionPreviewDto>>> GetByUserIdAsync(
     Guid userId,
     Guid currentUserId,
