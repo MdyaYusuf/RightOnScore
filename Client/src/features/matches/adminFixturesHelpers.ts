@@ -82,3 +82,11 @@ export function matchStatusLabel(status: MatchStatus): string {
 export function canRecordResult(status: MatchStatus): boolean {
   return status === MATCH_STATUS.Scheduled || status === MATCH_STATUS.Live;
 }
+
+export function canCorrectResult(status: MatchStatus): boolean {
+  return status === MATCH_STATUS.Finished;
+}
+
+export function canEnterOrCorrectResult(status: MatchStatus): boolean {
+  return canRecordResult(status) || canCorrectResult(status);
+}

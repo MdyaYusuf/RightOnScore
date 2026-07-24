@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 import { useAppDispatch, useAppSelector } from "../../../core/store/hooks";
 import { COMPETITION_STAGE_TYPE } from "../../competitionStages/competitionStageTypes";
 import {
-  canRecordResult,
+  canCorrectResult,
+  canEnterOrCorrectResult,
   fixtureContextLabel,
   fixtureStagePrimaryLabel,
   fixtureStageSecondaryLabel,
@@ -290,7 +291,7 @@ export function AdminFixturesPage() {
           >
             <div className="flex items-center justify-between border-b border-outline-variant/10 bg-[#0d1a17] px-6 py-4">
               <h3 id="result-modal-title" className="font-display text-xl font-semibold text-on-surface">
-                Maç Sonucu Gir
+                {canCorrectResult(selectedMatch.status) ? "Maç Sonucu Düzelt" : "Maç Sonucu Gir"}
               </h3>
               <button
                 type="button"
@@ -393,7 +394,7 @@ export function AdminFixturesPage() {
                 disabled={isBusy}
                 onClick={() => void handleSaveResult()}
               >
-                Kaydet
+                {canCorrectResult(selectedMatch.status) ? "Düzelt ve Yeniden Puanla" : "Kaydet"}
               </button>
             </div>
           </div>
@@ -569,13 +570,13 @@ export function AdminFixturesPage() {
               >
                 Tahminleri Gör
               </button>
-              {canRecordResult(selectedMatch.status) && (
+              {canEnterOrCorrectResult(selectedMatch.status) && (
                 <button
                   type="button"
                   className="rounded px-4 py-3 text-left font-label text-[14px] font-semibold text-on-surface transition-colors hover:bg-surface-container-high"
                   onClick={() => dispatch(openResultDialog(selectedMatch.id))}
                 >
-                  Sonuç Gir
+                  {canCorrectResult(selectedMatch.status) ? "Sonuç Düzelt" : "Sonuç Gir"}
                 </button>
               )}
               <button
@@ -638,9 +639,9 @@ function FixtureRow({
   const finished = match.status === MATCH_STATUS.Finished;
   const live = match.status === MATCH_STATUS.Live;
   const secondary = fixtureStageSecondaryLabel(match);
-  const actionLabel = finished ? "Düzenle" : "Sonuç Gir";
+  const actionLabel = finished ? "Sonuç Düzelt" : "Sonuç Gir";
   const actionIcon = finished ? "edit" : "edit_square";
-  const canAct = canRecordResult(match.status);
+  const canAct = canEnterOrCorrectResult(match.status);
 
   return (
     <div className="group grid grid-cols-1 items-center gap-4 px-6 py-5 transition-colors hover:bg-[#101e1b]/30 md:grid-cols-12">
@@ -735,12 +736,6 @@ function FixtureRow({
             <span className="material-symbols-outlined text-[18px]">{actionIcon}</span>
             {actionLabel}
           </button>
-        )}
-        {!canAct && finished && (
-          <span className="inline-flex items-center gap-2 rounded border border-outline-variant/20 px-4 py-2 font-label text-[14px] font-semibold text-outline/50">
-            <span className="material-symbols-outlined text-[18px]">edit</span>
-            Düzenle
-          </span>
         )}
         <button
           type="button"

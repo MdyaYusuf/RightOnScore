@@ -66,6 +66,16 @@ export function recordMatchResult(
   });
 }
 
+export function correctMatchResult(
+  request: RecordMatchResultRequest,
+): Promise<ReturnModel<null>> {
+  return apiClient<null>("/api/matches/result/correct", {
+    method: "PATCH",
+    body: request,
+    successToast: true,
+  });
+}
+
 export function deleteMatch(id: string): Promise<ReturnModel<null>> {
   return apiClient<null>(`/api/matches/${id}`, {
     method: "DELETE",

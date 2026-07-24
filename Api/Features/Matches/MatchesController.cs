@@ -127,6 +127,18 @@ public class MatchesController(IMatchService _matchService) : CustomBaseControll
     return CreateActionResult(result);
   }
 
+  [HttpPatch("result/correct")]
+  [Authorize(Roles = "Admin")]
+  public async Task<IActionResult> CorrectResult([FromBody] RecordMatchResultRequest request, CancellationToken cancellationToken)
+  {
+    var result = await _matchService.CorrectResultAsync(
+      request: request,
+      userRole: GetUserRole(),
+      cancellationToken: cancellationToken);
+
+    return CreateActionResult(result);
+  }
+
   [HttpDelete("{id:guid}")]
   [Authorize(Roles = "Admin")]
   public async Task<IActionResult> Delete(Guid id, CancellationToken cancellationToken)

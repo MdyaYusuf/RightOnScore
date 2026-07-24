@@ -49,6 +49,23 @@ public class EfMatchRepository : EfBaseRepository<BaseDbContext, Match, Guid>, I
       .OrderBy(m => m.KickoffTime)
       .ToListAsync(cancellationToken);
   }
+
+  public async Task<List<Guid>> GetFinishedMatchIdsFromAsync(
+    Guid competitionSeasonId,
+    DateTime fromKickoffTime,
+    Guid fromMatchId,
+    CancellationToken cancellationToken = default)
+  {
+    return await Query(enableTracking: false)
+      .Where(m => m.CompetitionSeasonId == competitionSeasonId
+        && m.Status == MatchStatus.Finished
+        && (m.KickoffTime > fromKickoffTime
+          || (m.KickoffTime == fromKickoffTime && m.Id >= fromMatchId)))
+      .OrderBy(m => m.KickoffTime)
+      .ThenBy(m => m.Id)
+      .Select(m => m.Id)
+      .ToListAsync(cancellationToken);
+  }
 }
 
 public static class MatchQueryableExtensions

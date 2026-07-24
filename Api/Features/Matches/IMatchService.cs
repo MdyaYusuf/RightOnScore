@@ -63,6 +63,11 @@ public interface IMatchService
     string userRole,
     CancellationToken cancellationToken = default);
 
+  Task<ReturnModel<NoData>> CorrectResultAsync(
+    RecordMatchResultRequest request,
+    string userRole,
+    CancellationToken cancellationToken = default);
+
   Task<ReturnModel<NoData>> RemoveAsync(
     Guid id,
     string userRole,

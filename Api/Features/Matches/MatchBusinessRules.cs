@@ -212,6 +212,14 @@ public class MatchBusinessRules(
     }
   }
 
+  public void ResultCanOnlyBeCorrectedWhenFinished(Match match)
+  {
+    if (match.Status != MatchStatus.Finished)
+    {
+      throw new BusinessException("Sonuç yalnızca bitmiş maçlar için düzeltilebilir.");
+    }
+  }
+
   public void ScoresMustBeValid(int homeScore, int awayScore)
   {
     if (homeScore < 0 || awayScore < 0)

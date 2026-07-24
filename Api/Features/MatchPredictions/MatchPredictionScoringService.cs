@@ -16,6 +16,70 @@ public class MatchPredictionScoringService(
 {
   public async Task ScoreMatchAsync(Guid matchId, CancellationToken cancellationToken = default)
   {
+    Match match = await LoadMatchForScoringAsync(matchId, cancellationToken);
+
+    IReadOnlyList<Guid> userIds = await ScoreMatchPredictionsAsync(match, cancellationToken);
+
+    if (userIds.Count == 0)
+    {
+      return;
+    }
+
+    await _seasonStandingService.RefreshStandingsForUsersAsync(
+      userIds,
+      match.CompetitionSeasonId,
+      cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+  }
+
+  public async Task RescoreMatchAndLaterAsync(Guid matchId, CancellationToken cancellationToken = default)
+  {
+    Match match = await LoadMatchForScoringAsync(matchId, cancellationToken);
+
+    List<Guid> matchIds = await _matchRepository.GetFinishedMatchIdsFromAsync(
+      match.CompetitionSeasonId,
+      match.KickoffTime,
+      match.Id,
+      cancellationToken);
+
+    HashSet<Guid> affectedUserIds = [];
+
+    foreach (Guid currentMatchId in matchIds)
+    {
+      Match currentMatch = currentMatchId == match.Id
+        ? match
+        : await LoadMatchForScoringAsync(currentMatchId, cancellationToken);
+
+      IReadOnlyList<Guid> userIds = await ScoreMatchPredictionsAsync(currentMatch, cancellationToken);
+
+      foreach (Guid userId in userIds)
+      {
+        affectedUserIds.Add(userId);
+      }
+
+      // Persist each match before the next so prior-streak queries see updated PointsEarned.
+      if (userIds.Count > 0)
+      {
+        await _unitOfWork.SaveChangesAsync(cancellationToken);
+      }
+    }
+
+    if (affectedUserIds.Count == 0)
+    {
+      return;
+    }
+
+    await _seasonStandingService.RefreshStandingsForUsersAsync(
+      affectedUserIds,
+      match.CompetitionSeasonId,
+      cancellationToken);
+
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+  }
+
+  private async Task<Match> LoadMatchForScoringAsync(Guid matchId, CancellationToken cancellationToken)
+  {
     Match match = await _matchRepository.GetByIdAsync(
       matchId,
       include: query => query
@@ -36,13 +100,20 @@ public class MatchPredictionScoringService(
       match.HomeTeamId,
       match.AwayTeamId);
 
+    return match;
+  }
+
+  private async Task<IReadOnlyList<Guid>> ScoreMatchPredictionsAsync(
+    Match match,
+    CancellationToken cancellationToken)
+  {
     List<MatchPrediction> predictions = await _matchPredictionRepository.GetByMatchIdForScoringAsync(
-      matchId,
+      match.Id,
       cancellationToken);
 
     if (predictions.Count == 0)
     {
-      return;
+      return [];
     }
 
     CompetitionStage? stage = match.CompetitionStage;
@@ -70,12 +141,6 @@ public class MatchPredictionScoringService(
       _matchPredictionRepository.Update(prediction);
     }
 
-    IEnumerable<Guid> userIds = predictions.Select(p => p.UserId);
-    await _seasonStandingService.RefreshStandingsForUsersAsync(
-      userIds,
-      match.CompetitionSeasonId,
-      cancellationToken);
-
-    await _unitOfWork.SaveChangesAsync(cancellationToken);
+    return predictions.Select(p => p.UserId).ToList();
   }
 }

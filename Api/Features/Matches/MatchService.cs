@@ -325,6 +325,55 @@ public class MatchService(
     };
   }
 
+  public async Task<ReturnModel<NoData>> CorrectResultAsync(
+    RecordMatchResultRequest request,
+    string userRole,
+    CancellationToken cancellationToken = default)
+  {
+    _businessRules.AdminRoleRequired(userRole);
+
+    var validationResult = await _recordResultValidator.ValidateAsync(request, cancellationToken);
+
+    if (!validationResult.IsValid)
+    {
+      throw new ValidationException(validationResult.Errors);
+    }
+
+    Match match = await _businessRules.GetMatchIfExistAsync(
+      request.Id,
+      include: query => query.Include(m => m.CompetitionStage),
+      enableTracking: true,
+      cancellationToken: cancellationToken);
+
+    _businessRules.ResultCanOnlyBeCorrectedWhenFinished(match);
+    _businessRules.ScoresMustBeValid(request.HomeScore, request.AwayScore);
+    _businessRules.AdvancingTeamMustBeValidForRecordedResult(
+      match.CompetitionStage,
+      request.HomeScore,
+      request.AwayScore,
+      request.AdvancingTeamId,
+      match.HomeTeamId,
+      match.AwayTeamId);
+
+    match.HomeScore = request.HomeScore;
+    match.AwayScore = request.AwayScore;
+    match.AdvancingTeamId = request.HomeScore == request.AwayScore
+      ? request.AdvancingTeamId
+      : null;
+
+    _matchRepository.Update(match);
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+    await _matchPredictionScoringService.RescoreMatchAndLaterAsync(match.Id, cancellationToken);
+
+    return new ReturnModel<NoData>()
+    {
+      Success = true,
+      Message = "Maç sonucu düzeltildi. İlgili tahminler yeniden puanlandı.",
+      StatusCode = 200
+    };
+  }
+
   public async Task<ReturnModel<NoData>> RemoveAsync(
     Guid id,
     string userRole,

@@ -247,10 +247,18 @@ export const saveMatchResult = createAsyncThunk(
       advancingTeamId,
     };
 
-    const result = await matchApi.recordMatchResult(request);
+    const result =
+      match.status === MATCH_STATUS.Finished
+        ? await matchApi.correctMatchResult(request)
+        : await matchApi.recordMatchResult(request);
 
     if (!result.success) {
-      return rejectWithValue(result.message ?? "Sonuç kaydedilemedi.");
+      return rejectWithValue(
+        result.message ??
+          (match.status === MATCH_STATUS.Finished
+            ? "Sonuç düzeltilemedi."
+            : "Sonuç kaydedilemedi."),
+      );
     }
 
     return match.id;
