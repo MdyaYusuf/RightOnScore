@@ -29,7 +29,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddOpenApi();
 builder.Services.AddProblemDetails();
 
 builder.Services.Configure<ApiBehaviorOptions>(options =>
@@ -101,12 +100,11 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
-if (app.Environment.IsDevelopment())
+if (!app.Environment.IsDevelopment())
 {
-  app.MapOpenApi();
+  app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseCors("AllowFrontend");

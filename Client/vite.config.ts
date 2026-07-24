@@ -8,14 +8,12 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "https://localhost:7102",
+        target: "http://localhost:5202",
         changeOrigin: true,
-        secure: false,
       },
       "/images": {
-        target: "https://localhost:7102",
+        target: "http://localhost:5202",
         changeOrigin: true,
-        secure: false,
       },
     },
   },
