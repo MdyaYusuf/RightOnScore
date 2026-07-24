@@ -5,6 +5,7 @@ import { RegisterPage } from "../../features/auth/pages/RegisterPage";
 import { CompetitionsPage } from "../../features/competitions/pages/CompetitionsPage";
 import { SeasonStructurePage } from "../../features/competitionSeasons/pages/SeasonStructurePage";
 import { SeasonHubPage } from "../../features/competitionSeasons/pages/SeasonHubPage";
+import { LandingPage } from "../../features/landing/pages/LandingPage";
 import { AdminFixturesPage } from "../../features/matches/pages/AdminFixturesPage";
 import { FixturesPage } from "../../features/matches/pages/FixturesPage";
 import { AdminPredictionsPage } from "../../features/matchPredictions/pages/AdminPredictionsPage";
@@ -14,7 +15,7 @@ import { TeamsPage } from "../../features/teams/pages/TeamsPage";
 import { SeasonTeamsPage } from "../../features/competitionTeams/pages/SeasonTeamsPage";
 import { AdminLayout } from "../layouts/AdminLayout";
 import { AppLayout } from "../layouts/AppLayout";
-import { PlayerAppLayout, RedirectToSeasons } from "../layouts/PlayerAppLayout";
+import { PlayerAppLayout } from "../layouts/PlayerAppLayout";
 import { RootLayout } from "../layouts/RootLayout";
 import { AdminRoute } from "./AdminRoute";
 import { GuestRoute } from "./GuestRoute";
@@ -32,6 +33,10 @@ export const router = createBrowserRouter([
             element: <GuestRoute />,
             children: [
               {
+                index: true,
+                element: <LandingPage />,
+              },
+              {
                 path: "login",
                 element: <LoginPage />,
               },
@@ -47,10 +52,6 @@ export const router = createBrowserRouter([
               {
                 element: <PlayerAppLayout />,
                 children: [
-                  {
-                    index: true,
-                    element: <RedirectToSeasons />,
-                  },
                   {
                     path: "seasons",
                     element: <SeasonHubPage />,
